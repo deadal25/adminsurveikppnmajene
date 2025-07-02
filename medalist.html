@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Survei</title>
+  <link rel="icon" type="image/png" href="images/logo.png" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Font Awesome & Google Fonts -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Pacifico&display=swap" rel="stylesheet" />
+
+  <style>
+  .sidebar-link.active {
+    background-color: #0d47a1;
+    color: white !important;
+    font-weight: 600;
+  }
+
+
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+    .font-pacifico {
+      font-family: 'Pacifico', cursive;
+    }
+  </style>
+</head>
+
+<body class="bg-[#f0f5fa] min-h-screen flex flex-col">
+  <div class="flex flex-1">
+    <!-- Sidebar -->
+    <aside class="flex flex-col w-56 bg-[#3f4661] text-[#a0a6b8] select-none">
+      <div class="flex items-center h-16 px-5 border-b border-[#2f344a]">
+        <span class="font-pacifico text-white text-2xl">Admin Survei</span>
+      </div>
+    <nav class="flex flex-col flex-1">
+  <a href="dashboard.html" class="sidebar-link flex items-center gap-2 px-5 py-3 hover:text-white" data-id="website">
+    <i class="fas fa-globe"></i> Website
+  </a>
+  <a href="user.html" class="sidebar-link flex items-center gap-2 px-5 py-3 hover:text-white" data-id="user">
+    <i class="fas fa-users"></i> User
+  </a>
+  <a href="medalist.html" class="sidebar-link flex items-center gap-2 px-5 py-3 hover:text-white" data-id="medalist">
+    <i class="fas fa-cubes"></i> Medalist
+  </a>
+  <!-- <a href="#" class="sidebar-link flex items-center gap-2 px-5 py-3 hover:text-white" data-id="role">
+    <i class="fas fa-lock"></i> Role
+  </a>
+  <a href="#" class="sidebar-link flex items-center gap-2 px-5 py-3 hover:text-white" data-id="menu">
+    <i class="fas fa-bars"></i> Menu
+  </a> -->
+  <a href="triwulan.html" class="sidebar-link flex items-center gap-2 px-5 py-3 hover:text-white" data-id="assign-role">
+    <i class="fas fa-link"></i> Assign Triwulan
+  </a>
+  <!-- <a href="#" class="sidebar-link flex items-center gap-2 px-5 py-3 hover:text-white" data-id="setting">
+    <i class="fas fa-cog"></i> Setting Website
+  </a>
+  <a href="#" class="sidebar-link flex items-center gap-2 px-5 py-3 hover:text-white" data-id="layout">
+    <i class="fas fa-desktop"></i> Layout Setting
+  </a> -->
+</nav>
+
+
+    </aside>
+
+    <!-- Main content -->
+    <div class="flex-1 flex flex-col">
+      <!-- Topbar -->
+      <header class="flex items-center bg-[#0d47a1] h-14 px-5 text-white relative">
+        <button class="lg:hidden"><i class="fas fa-bars text-xl"></i></button>
+        <div class="ml-auto flex items-center gap-5">
+          <button class="hover:opacity-80"><i class="fas fa-cog text-xl"></i></button>
+          <div class="relative">
+  <button onclick="toggleDropdown()" class="w-9 h-9 rounded-full overflow-hidden border border-white">
+    <img src="https://storage.googleapis.com/a1aa/image/eced6bcc-d8bc-4ed7-8490-8a0076e08860.jpg" alt="User" class="w-full h-full object-cover" />
+  </button>
+  <div id="dropdownProfile" class="absolute right-0 mt-2 w-56 bg-[#0d47a1] rounded-md shadow-lg opacity-0 invisible transition z-10">
+    <div class="flex flex-col items-center p-5 border-b border-[#f7dede]">
+      <img class="w-20 h-20 rounded-full object-cover" src="https://storage.googleapis.com/a1aa/image/eced6bcc-d8bc-4ed7-8490-8a0076e08860.jpg" />
+      <p id="adminName" class="mt-3 font-semibold text-[#f7dede] text-center">-</p>
+      <p id="adminEmail" class="text-xs text-[#f7dede] text-center">-</p>
+    </div>
+    <button onclick="logout()" class="w-full text-left px-5 py-3 hover:bg-red-600 text-white">Logout</button>
+  </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Breadcrumb -->
+      <nav class="bg-white px-5 py-3 text-sm text-[#3b82f6]">
+        <a class="hover:underline" href="#">Home</a>
+        <span class="mx-1 text-[#6b7280]">/</span>
+        <span>Web Setting</span>
+      </nav>
+
+      <!-- Content -->
+      <main class="flex-1 p-6 bg-[#f0f5fa] space-y-6">
+        <!-- Summary Cards -->
+        <!-- Tambahkan ini di dalam <main class="..."> setelah grafik -->
+<div class="space-y-6">
+  <div class="bg-white p-5 rounded shadow">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-lg font-semibold text-gray-700">🏆 Data Penilaian Employee</h3>
+      <div class="flex items-center space-x-2">
+        <label for="triwulanEmployee" class="text-sm text-gray-700">Triwulan:</label>
+        <select id="triwulanEmployee" class="border px-2 py-1 rounded text-sm">
+  <option value="TRIWULAN_I">I</option>
+  <option value="TRIWULAN_II">II</option>
+  <option value="TRIWULAN_III">III</option>
+  <option value="TRIWULAN_IV">IV</option>
+</select>
+
+        <button onclick="loadData('employee')" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm">Tampilkan</button>
+        <button onclick="downloadExcel('employee')" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-sm">Download Excel</button>
+
+        <!-- <button onclick="loadData('employee')" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm">Tampilkan</button> -->
+      </div>
+    </div>
+    <div id="employeeTableContainer" class="overflow-x-auto text-sm"></div>
+  </div>
+
+  <div class="bg-white p-5 rounded shadow">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-lg font-semibold text-gray-700">🎖️ Data Penilaian PPNPN</h3>
+      <div class="flex items-center space-x-2">
+        <label for="triwulanPPNP" class="text-sm text-gray-700">Triwulan:</label>
+        <select id="triwulanPPNP" class="border px-2 py-1 rounded text-sm">
+  <option value="TRIWULAN_I">I</option>
+  <option value="TRIWULAN_II">II</option>
+  <option value="TRIWULAN_III">III</option>
+  <option value="TRIWULAN_IV">IV</option>
+</select>
+
+        <button onclick="loadData('ppnp')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm">Tampilkan</button>
+        <button onclick="downloadExcel('ppnp')" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-sm">Download Excel</button>
+
+        <!-- <button onclick="loadData('ppnp')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm">Tampilkan</button> -->
+      </div>
+    </div>
+    <div id="ppnpTableContainer" class="overflow-x-auto text-sm"></div>
+  </div>
+</div>
+
+
+
+      </main>
+
+      <!-- Footer -->
+      <footer class="text-xs text-gray-500 text-center py-3">
+        ©2025 <a class="text-[#3b82f6] hover:underline" target="_blank">www.sisfo22uh.com</a>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+  function toggleDropdown() {
+  const dropdown = document.getElementById("dropdownProfile");
+  const isVisible = dropdown.classList.contains("opacity-100");
+
+  if (isVisible) {
+    dropdown.classList.remove("opacity-100", "visible");
+    dropdown.classList.add("opacity-0", "invisible");
+  } else {
+    dropdown.classList.remove("opacity-0", "invisible");
+    dropdown.classList.add("opacity-100", "visible");
+  }
+}
+
+</script>
+<script>
+  function logout() {
+  auth.signOut().then(() => {
+    window.location.href = "index.html";
+  }).catch(error => {
+    console.error("Gagal logout:", error);
+  });
+}
+</script>
+
+  <script>
+  // Ambil semua link sidebar
+  const links = document.querySelectorAll('.sidebar-link');
+
+  // Tambahkan event listener ke setiap link
+  links.forEach(link => {
+    link.addEventListener('click', function () {
+      const id = link.getAttribute('data-id');
+      // Simpan ID ke localStorage
+      localStorage.setItem('activeSidebar', id);
+    });
+  });
+
+  // Ambil ID aktif dari localStorage
+  const activeId = localStorage.getItem('activeSidebar');
+  if (activeId) {
+    links.forEach(link => {
+      link.classList.remove('bg-[#0d47a1]', 'text-white', 'font-semibold');
+      const id = link.getAttribute('data-id');
+      if (id === activeId) {
+        link.classList.add('bg-[#0d47a1]', 'text-white', 'font-semibold');
+      }
+    });
+  }
+</script>
+
+<!-- Tambahkan ini sebelum </body> -->
+<!-- Firebase & XLSX -->
+<!-- <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+<script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBT5x1OXqBu14Ep8TG91Tr-OkhcuSIV9qc",
+      authDomain: "kppnmajene0059.firebaseapp.com",
+      databaseURL: "https://kppnmajene0059-default-rtdb.firebaseio.com",
+      projectId: "kppnmajene0059",
+      storageBucket: "kppnmajene0059.appspot.com",
+      messagingSenderId: "258408908708",
+      appId: "1:258408908708:web:6fd534dd3aa7ea72952331"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const auth = firebase.auth();
+
+auth.onAuthStateChanged(user => {
+  if (!user) {
+    window.location.href = "index.html";
+  } else {
+    if (user.email !== "sisfo22uh@gmail.com") {
+      alert("❌ Hanya akun admin yang diizinkan.");
+      auth.signOut();
+      window.location.href = "index.html";
+    } else {
+      // ✅ Set nama dan email admin di topbar dropdown
+      document.getElementById("adminName").textContent = "Admin Sistem";
+      document.getElementById("adminEmail").textContent = user.email;
+    }
+  }
+});
+
+
+  const komponenEmployee = ["Kedisiplinan","Kerja sama","Kreativitas","Komitmen","Manajemen Waktu","Inisiatif","Komunikasi","Perilaku","Tanggung Jawab","Pengetahuan Teknis"];
+  const komponenPPNP = ["Integritas", "Profesionalisme", "Sinergi", "Pelayanan", "Kesempurnaan","Satu Informasi", "Dua Menit", "Tiga Salam", "Rencana-Kerja-Monitor", "5R"];
+
+  function loadData(type) {
+    const triwulan = document.getElementById(type === 'employee' ? 'triwulanEmployee' : 'triwulanPPNP').value;
+    const container = document.getElementById(type === 'employee' ? 'employeeTableContainer' : 'ppnpTableContainer');
+    container.innerHTML = 'Memuat data...';
+
+    const path = type === 'employee' ? 'SurveiBestEmployee' : 'SurveiBestPPNP';
+    const komponen = type === 'employee' ? komponenEmployee : komponenPPNP;
+    const skala = type === 'employee' ? 14 : 25;
+
+    db.ref(`${path}/${triwulan}`).once('value').then(snapshot => {
+      const data = snapshot.val();
+      if (!data) {
+        container.innerHTML = '<p class="text-red-500">Tidak ada data ditemukan.</p>';
+        return;
+      }
+
+      const hasil = {};
+      if (type === 'employee') {
+        // Struktur: responden -> dinilai -> [nilai...]
+        for (const namaResponden in data) {
+          const penilaian = data[namaResponden];
+          for (const namaDinilai in penilaian) {
+            if (!hasil[namaDinilai]) hasil[namaDinilai] = Array(komponen.length).fill(0);
+            Object.values(penilaian[namaDinilai]).forEach((nilai, i) => {
+              hasil[namaDinilai][i] += nilai ?? 0;
+            });
+          }
+        }
+      } else {
+        // Struktur: dinilai -> responden -> [nilai...]
+        for (const namaDinilai in data) {
+          for (const namaResponden in data[namaDinilai]) {
+            const penilaian = data[namaDinilai][namaResponden];
+            if (!hasil[namaDinilai]) hasil[namaDinilai] = Array(komponen.length).fill(0);
+            Object.keys(penilaian).forEach(index => {
+              hasil[namaDinilai][index] += penilaian[index];
+            });
+          }
+        }
+      }
+
+      // Proses hasil
+      const rows = Object.entries(hasil).map(([nama, nilaiArr]) => {
+        const nilaiSkala = nilaiArr.map(n => n / skala);
+        const total = nilaiSkala.reduce((a, b) => a + b, 0);
+        const rata2 = total / komponen.length;
+        return { nama, nilai: nilaiSkala.map(n => n.toFixed(2)), total: total.toFixed(2), rata: rata2.toFixed(2) };
+      }).sort((a, b) => b.total - a.total);
+
+      // Generate tabel
+      let html = '<table class="min-w-full border rounded"><thead><tr class="bg-gray-200">';
+      html += '<th class="border px-2 py-1 text-center">Peringkat</th><th class="border px-2 py-1">Nama</th>';
+      komponen.forEach(k => html += `<th class="border px-2 py-1">${k}</th>`);
+      html += '<th class="border px-2 py-1">Total</th><th class="border px-2 py-1">Rata-rata</th></tr></thead><tbody>';
+
+      rows.forEach((row, idx) => {
+        html += `<tr class="hover:bg-gray-100"><td class="border px-2 py-1 text-center">${idx + 1}</td><td class="border px-2 py-1">${row.nama}</td>`;
+        row.nilai.forEach(val => html += `<td class="border px-2 py-1">${val}</td>`);
+        html += `<td class="border px-2 py-1 font-semibold">${row.total}</td><td class="border px-2 py-1 font-semibold">${row.rata}</td></tr>`;
+      });
+
+      html += '</tbody></table>';
+      container.innerHTML = html;
+    });
+  }
+
+  function downloadExcel(type) {
+  const header = ["Peringkat", "Nama", ...currentKomponen, "Total", "Rata-rata"];
+  const data = [header];
+
+  const sortedData = Object.entries(hasilDetail).map(([nama, nilai]) => {
+    const nilaiSkala = nilai.map(n => n / currentSkala);
+    const total = nilaiSkala.reduce((a, b) => a + b, 0);
+    const rataRata = (total / currentKomponen.length).toFixed(2);
+    return {
+      nama,
+      nilai: nilaiSkala.map(n => n.toFixed(2)),
+      total: total.toFixed(2),
+      rataRata
+    };
+  }).sort((a, b) => b.total - a.total);
+
+  sortedData.forEach((row, index) => {
+    data.push([index + 1, row.nama, ...row.nilai, row.total, row.rataRata]);
+  });
+
+  const ws = XLSX.utils.aoa_to_sheet(data);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Detail Medalist");
+
+  const filename = `Detail_Medalist_${type.toUpperCase()}.xlsx`;
+  XLSX.writeFile(wb, filename);
+}
+
+</script>
+
+
+</body>
+</html>

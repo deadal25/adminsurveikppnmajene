@@ -1,1 +1,1 @@
-# adminsurveikppnmajene
+# surveiadmin
