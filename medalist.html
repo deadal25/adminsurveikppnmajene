@@ -250,6 +250,19 @@ auth.onAuthStateChanged(user => {
   }
 });
 
+let hasilDetail = {
+  employee: {},
+  ppnp: {}
+};
+let currentKomponen = {
+  employee: [],
+  ppnp: []
+};
+let currentSkala = {
+  employee: 0,
+  ppnp: 0
+};
+
 
   const komponenEmployee = ["Kedisiplinan","Kerja sama","Kreativitas","Komitmen","Manajemen Waktu","Inisiatif","Komunikasi","Perilaku","Tanggung Jawab","Pengetahuan Teknis"];
   const komponenPPNP = ["Integritas", "Profesionalisme", "Sinergi", "Pelayanan", "Kesempurnaan","Satu Informasi", "Dua Menit", "Tiga Salam", "Rencana-Kerja-Monitor", "5R"];
@@ -295,6 +308,11 @@ auth.onAuthStateChanged(user => {
         }
       }
 
+      hasilDetail[type] = hasil;
+      currentKomponen[type] = komponen;
+      currentSkala[type] = skala;
+
+
       // Proses hasil
       const rows = Object.entries(hasil).map(([nama, nilaiArr]) => {
         const nilaiSkala = nilaiArr.map(n => n / skala);
@@ -321,13 +339,13 @@ auth.onAuthStateChanged(user => {
   }
 
   function downloadExcel(type) {
-  const header = ["Peringkat", "Nama", ...currentKomponen, "Total", "Rata-rata"];
+  const header = ["Peringkat", "Nama", ...currentKomponen[type], "Total", "Rata-rata"];
   const data = [header];
 
-  const sortedData = Object.entries(hasilDetail).map(([nama, nilai]) => {
-    const nilaiSkala = nilai.map(n => n / currentSkala);
+  const sortedData = Object.entries(hasilDetail[type]).map(([nama, nilai]) => {
+    const nilaiSkala = nilai.map(n => n / currentSkala[type]);
     const total = nilaiSkala.reduce((a, b) => a + b, 0);
-    const rataRata = (total / currentKomponen.length).toFixed(2);
+    const rataRata = (total / currentKomponen[type].length).toFixed(2);
     return {
       nama,
       nilai: nilaiSkala.map(n => n.toFixed(2)),
@@ -347,6 +365,8 @@ auth.onAuthStateChanged(user => {
   const filename = `Detail_Medalist_${type.toUpperCase()}.xlsx`;
   XLSX.writeFile(wb, filename);
 }
+
+
 
 </script>
 
